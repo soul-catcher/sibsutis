@@ -47,7 +47,6 @@ void DocWindow_Samsonov_Matafonov::slotSave()
 
     if (file.open(QIODevice::WriteOnly)) {
         QTextStream(&file) << toPlainText();
-
         file.close();
         emit changeWindowTitle(m_strFileName);
         QMessageBox::information(this, "Файл сохранён", "Файл успешно сохранён");
