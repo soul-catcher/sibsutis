@@ -41,9 +41,16 @@ void Samsonov_Matafonov::on_buttonBox_clicked(QAbstractButton *button)
             QMessageBox::information(this, "Файл сохранён", "Файл успешно сохранён");
 
         }
-    } else if (button->text() == "Load") {
+    } else if (button->text() == "Open") {
+        QString filename = QFileDialog::getOpenFileName(nullptr, "Открыть", QDir::currentPath());
+        QFile file(filename);
+        if (file.open(QIODevice::ReadOnly)) {
+            QTextStream stream(&file);
+            ui->textEdit->setText(stream.readAll());
+            file.close();
+        }
         QStringList inf = ui->textEdit->toPlainText().split("\n");
-        QImage image2(inf.at(4));
+        QImage image2(inf.at(5));
         ui->label->setPixmap(QPixmap::fromImage(image2));
     }
 }
