@@ -1,6 +1,6 @@
-#include <iostream>
-#include <iomanip>
-#include <fstream>
+#include <iostream>  // Ввод-вывод на консоль
+#include <iomanip>  // Форматирование вывода на консоль
+#include <fstream>  // Для работы с файлами
 #include <vector>
 #include <map>
 #include <list>
@@ -8,8 +8,9 @@
 
 using namespace std;
 
-const int N = 4000;
+const int N = 4000;  // Размер базы данных
 
+// структура БД
 struct Record {
     char fio[32];
     char street[18];
@@ -18,11 +19,14 @@ struct Record {
     char date[10];
 };
 
+// Структура для того, чтобы динамически загружать связный список
 struct Node {
     Record record;
     Node *next;
 };
 
+// Функция для украшения строки приглашения (не обязательна)
+// Можно поменять символ приглашения с > на что-нибудь другое
 string prompt(const string &str) {
     cout << str;
     cout << "\n> ";
@@ -31,6 +35,7 @@ string prompt(const string &str) {
     return ans;
 }
 
+// Функция для сравнения строк, возвращает -1, если str1 < str2, 1, если str1 > str2 и 0, если они равны
 int strcomp(const string &str1, const string &str2, int len = 10000000) {
     for (int i = 0; i < len; ++i) {
         if (str1[i] == '\0' and str2[i] == '\0') {
@@ -48,6 +53,7 @@ int strcomp(const string &str1, const string &str2, int len = 10000000) {
     return 0;
 }
 
+// Загрузка БД с диска в динамическую память (в связный список)
 Node *load_to_memory() {
     Node *root = nullptr;
     ifstream file("testBase4.dat", ios::binary);
@@ -69,6 +75,8 @@ struct body {
     Node *tail;
 };
 
+// Сравнение двух "записей" (структур) для сортировки
+// Возвращает -1, если record1 > record2, 1, если меньше
 bool diff(Node *a, Node *b) {
     int diff = 0;
     diff = strcomp(a->record.fio, b->record.fio);
@@ -169,10 +177,12 @@ void MergeSort(Node *&S, int n) {
     S = c[0].head;
 }
 
+// Распечатка заголовков таблицы
 void print_head() {
-    cout << "Full Name                        Street          Home  Apt     Date\n";
+    cout << "Record Full Name                       Street          Home  Apt  Date\n";
 }
 
+// Вывод одной "записи"
 void print_record(Record *record) {
     cout << record->fio
          << "  " << record->street
@@ -181,13 +191,14 @@ void print_record(Record *record) {
          << "  " << record->date << "\n";
 }
 
-
+// Вершина дерева
 struct Vertex {
     Record *data;
     Vertex *left;
     Vertex *right;
 };
 
+// Добавление записи в дерево рекурсивным методом
 void SDPREC(Record *D, Vertex *&p) {
     if (!p) {
         p = new Vertex;
@@ -201,6 +212,7 @@ void SDPREC(Record *D, Vertex *&p) {
     }
 }
 
+// Функция выстраивает дерево
 void A2(int L, int R, int w[], Record *V[], Vertex *&root) {
     int wes = 0, sum = 0;
     int i;
@@ -217,6 +229,7 @@ void A2(int L, int R, int w[], Record *V[], Vertex *&root) {
     }
 }
 
+// Вывод дерева
 void Print_tree(Vertex *p) {
     static int i = 1;
     if (p) {
@@ -227,6 +240,7 @@ void Print_tree(Vertex *p) {
     }
 }
 
+// Выводит найденные по ключу записи из дерева
 Record *search_in_tree(Vertex *root, int key) {
     int i = 1;
     while (root) {
@@ -243,7 +257,7 @@ Record *search_in_tree(Vertex *root, int key) {
     return nullptr;
 }
 
-
+// Очищает динамическую память, занятую деревом
 void rmtree(Vertex *root) {
     if (root) {
         rmtree(root->right);
@@ -252,6 +266,7 @@ void rmtree(Vertex *root) {
     }
 }
 
+// Меню работы с деревом
 void tree(Record *arr[], int n) {
     Vertex *root = nullptr;
     int w[n + 1];
@@ -272,16 +287,16 @@ void tree(Record *arr[], int n) {
             continue;
         }
     }
-
     print_head();
     search_in_tree(root, key);
     rmtree(root);
 }
 
+// Меню для работы с индексным массивом:
+// Перемещение по списку, вывод и т.д.
 void show_list(Record *ind_arr[], int n = N) {
     int ind = 0;
     while (true) {
-        cout << "Record  ";
         print_head();
         for (int i = 0; i < 20; i++) {
             Record *record = ind_arr[ind + i];
@@ -326,6 +341,7 @@ void show_list(Record *ind_arr[], int n = N) {
     }
 }
 
+// Создание индексного массива из односвязного списка
 void make_index_array(Record *arr[], Node *root, int n = N) {
     Node *p = root;
     for (int i = 0; i < n; i++) {
@@ -334,6 +350,7 @@ void make_index_array(Record *arr[], Node *root, int n = N) {
     }
 }
 
+// Быстрый поиск в отсортированном массиве
 int quick_search(Record *arr[], const string &key) {
     int l = 0;
     int r = N - 1;
@@ -351,10 +368,11 @@ int quick_search(Record *arr[], const string &key) {
     return -1;
 }
 
+// Меню для поиска по отсортированному индексному массиву
 void search(Record *arr[], int &ind, int &n) {
     string key;
     do {
-        key = prompt("Input search key (3 characters)");
+        key = prompt("Input search key (first 3 letters of fio)");
     } while (key.length() != 3);
     ind = quick_search(arr, key);
     if (ind == -1) {
@@ -367,6 +385,7 @@ void search(Record *arr[], int &ind, int &n) {
     }
 }
 
+// Структура для кодирования
 struct Node2 {
     int a;
     char c;
@@ -383,7 +402,7 @@ struct Node2 {
     }
 };
 
-
+// Стравнение двух структур (сверху которые)
 struct MyCompare {
     bool operator()(const Node2 *l, const Node2 *r) const {
         return l->a < r->a;
@@ -491,6 +510,7 @@ void haffman() {
     cout << "Average word length = " << longer << endl;
 }
 
+// Главное меню
 void mainloop(Record *unsorted_ind_array[], Record *sorted_ind_array[]) {
     int search_ind, search_n = -1;
     while (true) {
@@ -512,7 +532,7 @@ void mainloop(Record *unsorted_ind_array[], Record *sorted_ind_array[]) {
                 break;
             case '4':
                 if (search_n == -1) {
-                    cout << "Please search first\n";
+                    cout << "Please search anything before making tree\n";
                 } else {
                     tree(&sorted_ind_array[search_ind], search_n);
                 }
@@ -526,16 +546,17 @@ void mainloop(Record *unsorted_ind_array[], Record *sorted_ind_array[]) {
     }
 }
 
+
 int main() {
-    Node *root = load_to_memory();
-    if (!root) {
+    Node *root = load_to_memory();  // Загрузка БД в связный список
+    if (!root) {  // Если не удалось загрузить, выводим ошибку и завершаем программу
         cout << "File not found" << endl;
         return 1;
     }
     Record *unsorted_ind_arr[N];
     Record *sorted_ind_arr[N];
-    make_index_array(unsorted_ind_arr, root);
-    MergeSort(root, N);
-    make_index_array(sorted_ind_arr, root);
-    mainloop(unsorted_ind_arr, sorted_ind_arr);
+    make_index_array(unsorted_ind_arr, root);  // Создание индексного массива по неотсортированному списку
+    MergeSort(root, N);  // Сортировка списка
+    make_index_array(sorted_ind_arr, root);  // Создание инлексного массива по отсортированному списку
+    mainloop(unsorted_ind_arr, sorted_ind_arr);  // Запуск главного меню
 }
