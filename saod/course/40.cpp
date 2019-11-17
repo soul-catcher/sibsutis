@@ -42,7 +42,7 @@ string prompt(const string &str) {
 // Загрузка БД с диска в динамическую память (в связный список)
 Node *load_to_memory() {
     ifstream file("testBase2.dat", ios::binary);
-    if (not file.is_open()) {
+    if (!file.is_open()) {
         return NULL;
     }
 
@@ -71,11 +71,11 @@ int strcomp(const string &str1, const string &str2, int len = -1) {
         len = (int) str1.length();
     }
     for (int i = 0; i < len; ++i) {
-        if (str1[i] == '\0' and str2[i] == '\0') {
+        if (str1[i] == '\0' && str2[i] == '\0') {
             return 0;
-        } else if (str1[i] == ' ' and str2[i] != ' ') {
+        } else if (str1[i] == ' ' && str2[i] != ' ') {
             return -1;
-        } else if (str1[i] != ' ' and str2[i] == ' ') {
+        } else if (str1[i] != ' ' && str2[i] == ' ') {
             return 1;
         } else if (str1[i] < str2[i]) {
             return -1;
@@ -427,16 +427,15 @@ unordered_map<char, int> get_char_counts_from_file(const string &file_name, int 
     if (!file.is_open()) {
         throw runtime_error("Could not open file");
     }
-    char ch_arr[sizeof(Record) * n];
+    auto ch_arr = new char[sizeof(Record) * n];
     file.read((char *) ch_arr, sizeof(Record) * n);
     file.close();
 
     unordered_map<char, int> counter_map;
 //    file_size = 0;
-    for (auto ch : ch_arr) {
-        counter_map[ch]++;
-//        file_size++;
-    }
+	for (int i = 0; i < n; i++) {
+		counter_map[ch_arr[i]]++;
+	}
     return counter_map;
 }
 
@@ -462,36 +461,38 @@ struct MyCompare {
     }
 };
 
-vector<bool> code;
-map<char, vector<bool> > table;
-
-void BuildTable(Node2 *root) {
+void BuildTable(Node2 *root, map<char, vector<bool> > &table, vector<bool> &code) {
     if (root->left != nullptr) {
         code.push_back(0);
-        BuildTable(root->left);
+        BuildTable(root->left, table, code);
     }
     if (root->right != nullptr) {
         code.push_back(1);
-        BuildTable(root->right);
+        BuildTable(root->right, table, code);
     }
     if (root->left == nullptr && root->right == nullptr) {
         table[root->c] = code;
     }
-    code.pop_back();
+    if (!code.empty()) {
+        code.pop_back();
+    }
 }
 
 void haffman() {
     int j = 0, q = 0, kol = 0;
-    double ver[75], codee[75], longer = 0, H = 0;
+    double ver[256], codee[256], longer = 0, H = 0;
     ifstream f("testBase2.dat", ios::binary);
     if (!f.is_open()) {
         throw runtime_error("Can't open file");
     }
-    Record records[N];
+    auto records = new Record[N];
     f.read((char *) records, sizeof(Record) * N);
     f.close();
     auto m = get_char_counts_from_file("testBase2.dat");
     list<Node2 *> t;
+    for (auto &itr : m) {
+        kol += itr.second;
+    }
     for (auto &itr : m) {
         Node2 *p = new Node2;
         p->c = itr.first;
@@ -501,7 +502,6 @@ void haffman() {
         t.push_back(p);
         j++;
     }
-    j = 0;
     while (t.size() != 1) {
         t.sort(MyCompare());
         Node2 *SonL = t.front();
@@ -512,27 +512,30 @@ void haffman() {
         t.push_back(parent);
     }
     Node2 *root = t.front();
-    BuildTable(root);
-
+	map<char, vector<bool> > table;
+    vector<bool> code;
+    BuildTable(root, table, code);
+    j = 0;
     map<char, vector<bool> >::iterator it;
     vector<bool>::iterator ii;
-    for (it = table.begin(); it != table.end(); it++) {
-        cout << it->first << " : ";
-        for (ii = table[it->first].begin(); ii != table[it->first].end(); ii++, q++) cout << (*ii);
+    for (auto it : table) {
+        cout << it.first << " : ";
+        for (auto coded : it.second) {
+            cout << coded;
+        }
         cout << "\n";
-        codee[j] = q;
+        codee[j] = it.second.size();
         j++;
-        q = 0;
     }
     f.clear();
     f.seekg(0);
     for (j = 0; j < m.size(); j++) {
-        H += ver[j] * log2l(ver[j]);
+        H += ver[j] * log2(ver[j]);
         longer += ver[j] * codee[j];
     }
     cout << "Kol-vo = " << kol << endl;
     cout << "Size = " << m.size() << endl;
-    cout << "Entropy = " << H * (-1) << endl;
+    cout << "Entropy = " << -H << endl;
     cout << "Average word length = " << longer << endl;
 }
 
@@ -544,7 +547,7 @@ void mainloop(Record *unsorted_ind_array[], Record *sorted_ind_array[]) {
                               "2: Show sorted list\n"
                               "3: Search\n"
                               "4: Tree\n"
-                              "5: Coding"
+                              "5: Coding\n"
                               "Any key: Exit");
         switch (chose[0]) {
             case '1':
@@ -578,8 +581,8 @@ int main() {
         cout << "File not found" << endl;
         return 1;
     }
-    Record *unsorted_ind_arr[N];
-    Record *sorted_ind_arr[N];
+    auto unsorted_ind_arr = new Record*[N];
+    auto sorted_ind_arr = new Record*[N];
     make_index_array(unsorted_ind_arr, root);  // Создание индексного массива по неотсортированному списку
     digitalSort(root);  // Сортировка списка
     make_index_array(sorted_ind_arr, root);  // Создание инлексного массива по отсортированному списку
