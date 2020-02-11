@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Calculator</string>
+    <string name="clear">Clear</string>
+    <string name="divby0">Cannot div by 0</string>
+</resources>
