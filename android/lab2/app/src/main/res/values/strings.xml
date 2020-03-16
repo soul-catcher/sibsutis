@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Lab2</string>
+    <string name="first_frag_str">Ну в общем надпись</string>
+    <string-array name="sec_frag_arr">
+        <item>Первая строчка</item>
+        <item>Вторая строчка</item>
+        <item>Третья строчка</item>
+        <item>Мне надоело. Не будет больше строчек</item>
+    </string-array>
+    <string name="left_tab">Left tab</string>
+    <string name="middle_tab">Middle tab</string>
+    <string name="right_tab">Right tab</string>
+    <string name="mouse_description">Мыш (кродеться)</string>
+</resources>
