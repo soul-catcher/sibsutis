@@ -28,10 +28,11 @@ def foo(matr):
 foo(matr)
 
 for row in matr:
-    for i, el in enumerate(row[:-1]):
-        if el != 0:
-            if el > 0:
-                print(f"+{el}x{i + 1} ", end='')
-            else:
-                print(f"{el}x{i + 1} ", end='')
-    print(f"= {row[-1]}")
+    if len(set(row)) > 1 or row[0] != 0:
+        for i, el in enumerate(row[:-1]):
+            if el != 0:
+                if el > 0:
+                    print(f"+{el}x{i + 1} ", end='')
+                else:
+                    print(f"{el}x{i + 1} ", end='')
+        print(f"= {row[-1]}")
