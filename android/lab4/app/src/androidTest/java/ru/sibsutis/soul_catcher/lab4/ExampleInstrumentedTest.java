@@ -1,4 +1,4 @@
-package ru.sibsutis.soul_catcher.lab3;
+package ru.sibsutis.soul_catcher.lab4;
 
 import android.content.Context;
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.sibsutis.soul_catcher.lab3">
+    package="ru.sibsutis.soul_catcher.lab4">
 
     <application
         android:allowBackup="true"
