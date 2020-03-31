@@ -3,7 +3,7 @@ import itertools
 
 
 def matrix_formatter(matrix):
-    return '\n'.join(''.join(f"{str(item):10}" for item in row) for row in matrix)
+    return '\n'.join(''.join(f"{str(item):11}" for item in row) for row in matrix)
 
 
 def is_list_contains_only_zeroes(lst):
@@ -32,7 +32,7 @@ def get_base_solution(matrix):
     return solution
 
 
-matr = [list(map(Fraction, line.split())) for line in open("simple_matrix.txt")]
+matr = [list(map(Fraction, line.split())) for line in open("matr01.txt")]
 
 N = len(matr)
 M = len(matr[0])
@@ -61,5 +61,5 @@ def format_solutions(solutions):
 
 
 print("Базисные решения:", *format_solutions(solutions),
-      "Опорные решения:", *format_solutions(filter(lambda solution: all(elem >= 0 for elem in solution), solutions)),
+      "\nОпорные решения:", *format_solutions(filter(lambda solution: all(elem >= 0 for elem in solution), solutions)),
       sep='\n')
