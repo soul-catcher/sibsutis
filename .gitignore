@@ -2,5 +2,6 @@
 *build*/
 *venv/
 codeforces/
+__pycache__/
 a.out
 .vs/
