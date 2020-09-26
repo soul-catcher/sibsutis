@@ -68,15 +68,15 @@ def is_prime(n: int) -> bool:
     """Возвращает True, если число n простое, иначе False"""
     if n < 2:
         return False
-    return all(n % i for i in range(2, int(math.sqrt(n)) + 1))
+    return all(n % i for i in range(2, math.isqrt(n) + 1))
 
 
 def gen_p(a: int, b: int) -> int:
     """Генерирует безопасное простое число в диапазоне [a, b]"""
     while True:
-        num = random.randint(a // 2, (b - 1) // 2)
-        if is_prime(num) and is_prime(num * 2 + 1):
-            return num * 2 + 1
+        q = random.randint(a // 2, (b - 1) // 2)
+        if is_prime(q) and is_prime(q * 2 + 1):
+            return q * 2 + 1
 
 
 def _gen_g(mod: int) -> int:
@@ -91,3 +91,16 @@ def gen_public(private_key: int, mod: int):
 def gen_common(secret_key: int, public_key: int, mod: int) -> int:
     """Генерирует общий ключ из закрытого и открытого по модулю"""
     return pow(public_key, secret_key, mod)
+
+
+def shanks(y: int, a: int, mod: int) -> typing.Union[int, None]:
+    """Вычисляет x для выражения y = a ** x % mod"""
+    if y >= mod:
+        raise ValueError("y не может быть больше или равным mod")
+    m = k = math.ceil(math.sqrt(mod))
+    seq1 = {pow(a, j, mod) * y % mod: j for j in range(m)}
+    seq2 = (pow(a, i * m, mod) for i in range(1, k + 1))
+    for i, vel in enumerate(seq2, 1):
+        if (j := seq1.get(vel)) is not None:
+            return i * m - j
+    return None
