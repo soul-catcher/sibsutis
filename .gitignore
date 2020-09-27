@@ -1,7 +1,10 @@
 .idea/
 *build*/
-*venv/
+venv/
 codeforces/
 __pycache__/
 a.out
+out/
+libs/
+*.iml
 .vs/
