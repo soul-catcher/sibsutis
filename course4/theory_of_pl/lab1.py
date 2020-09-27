@@ -61,7 +61,7 @@ try:
                 only_term = False
                 for elem in G.P[symbol]:
                     scopy = sequence[:i] + elem + sequence[i + 1:]
-                    if len(scopy) <= args.range[1] + 1:
+                    if len(scopy) <= args.range[1] + 3:
                         stack.append((prev, scopy))
         if only_term and args.range[0] <= len(sequence) <= args.range[1]:
             ans.append(prev)
