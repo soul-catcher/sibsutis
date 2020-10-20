@@ -6,7 +6,7 @@ import sys
 import typing
 from dataclasses import dataclass
 
-from graphical_tree import GraphicalTree, Vertex
+from .graphical_tree import GraphicalTree, Vertex
 
 
 def check_positive(value: str) -> int:
