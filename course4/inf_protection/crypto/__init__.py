@@ -80,7 +80,10 @@ def gen_p(a: int, b: int) -> int:
 
 
 def _gen_g(mod: int) -> int:
-    return next(g for g in range(2, mod - 1) if pow(g, (mod - 1) // 2, mod) != 1)
+    while True:
+        g = random.randrange(2, mod)
+        if pow(g, (mod - 1) // 2, mod) != 1:
+            return g
 
 
 def gen_public(private_key: int, mod: int):
