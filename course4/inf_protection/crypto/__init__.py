@@ -72,11 +72,19 @@ def is_prime(n: int) -> bool:
 
 
 def gen_p(a: int, b: int) -> int:
+    """Генерирует простое число в диапазоне [a, b]"""
+    while True:
+        p = random.randint(a, b)
+        if is_prime(p):
+            return p
+
+
+def gen_safe_p(a: int, b: int) -> int:
     """Генерирует безопасное простое число в диапазоне [a, b]"""
     while True:
-        q = random.randint(a // 2, (b - 1) // 2)
-        if is_prime(q) and is_prime(q * 2 + 1):
-            return q * 2 + 1
+        p = gen_p(a // 2, (b - 1) // 2)
+        if is_prime(p * 2 + 1):
+            return p * 2 + 1
 
 
 def _gen_g(mod: int) -> int:
@@ -107,3 +115,10 @@ def shanks(y: int, a: int, mod: int) -> typing.Union[int, None]:
         if (j := seq1.get(vel)) is not None:
             return i * m - j
     return None
+
+
+def gen_mutually_prime(a):
+    while True:
+        b = random.randrange(2, a)
+        if math.gcd(a, b) == 1:
+            return b
