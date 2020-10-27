@@ -5,12 +5,18 @@ with open('automate.txt') as f:
     start = f.readline().split()[1]
     end = frozenset(f.readline().split()[1:])
     header = f.readline().split()
-    non_term_inds = dict(map(reversed, enumerate(header)))
+    non_term_inds = {}
+    for i, char in enumerate(header):
+        if char in non_term_inds:
+            print(f'Ошибка! Cимвол {char} дублируется в алфавите')
+            exit(1)
+        non_term_inds[char] = i
     for line in f:
         automate[line[0]] = tuple(line[1:].split())
 
 
 def launch_automate(seq) -> None:
+    i = 0
     if (state := start) not in automate:
         print('Ошибка! Неверно задано начальное состояние! Оно отсутствует в таблице!')
         return
@@ -31,6 +37,7 @@ def launch_automate(seq) -> None:
         print(f'({state},λ)')
         print('Автомат допускает цепочку', seq)
     else:
+        print(f'({state},{seq[i + 1:]})')
         print('\nЦепочка кончилась, но автомат не пришёл в заключительное состояние!')
 
 

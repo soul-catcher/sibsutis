@@ -1,6 +1,6 @@
 start: p
-stop: r
+stop: r p
   0 1
-p q p
-q r p
-r r -
+p q -
+q r r
+r q q
