@@ -27,8 +27,8 @@ def encrypt_data(data, power, mod):
 
 alice_encrypted = encrypt_data(original_data, ca, p)  # Зашифровка Алисой
 alice_and_bob_encrypted = encrypt_data(alice_encrypted, cb, p)  # Зашифровка Бобом
-open('encrypted_shamir.txt', 'w').write(str(alice_and_bob_encrypted))
+open('shamir_encrypted.txt', 'w').write(str(alice_and_bob_encrypted))
 bob_encrypted = encrypt_data(alice_and_bob_encrypted, da, p)  # Расшифровка Алисой
 decrypted = encrypt_data(bob_encrypted, db, p)  # Расшифровка Бобом
 
-write_bytes_to_file(decrypted, open('decrypted_shamir.jpg', 'wb'))
+write_bytes_to_file(decrypted, open('shamir_decrypted.jpg', 'wb'))
