@@ -4,19 +4,19 @@ from crypto import *
 p = gen_p(1, 10 ** 9)
 message = random.randint(1, p)
 
-while True:
-    ca = gen_mutually_prime(p - 1)
-    gcd, da, _ = extgcd(ca, p - 1)
-    assert gcd == 1
-    if da > 0:
-        break
 
-while True:
-    cb = gen_mutually_prime(p - 1)
-    gcd, db, _ = extgcd(cb, p - 1)
-    assert gcd == 1
-    if db > 0:
-        break
+def gen_c_d(p):
+    while True:
+        c = gen_mutually_prime(p - 1)
+        gcd, d, _ = extgcd(c, p - 1)
+        assert gcd == 1
+        if d > 0:
+            break
+    return c
+
+
+ca, da = gen_c_d(p)
+cb, db = gen_c_d(p)
 
 x1 = pow(message, ca, p)
 x2 = pow(x1, cb, p)

@@ -4,6 +4,7 @@ __author__ = "Dmitry Samsonov"
 
 import math
 import random
+import sys
 import typing
 
 
@@ -87,7 +88,7 @@ def gen_safe_p(a: int, b: int) -> int:
             return p * 2 + 1
 
 
-def _gen_g(mod: int) -> int:
+def gen_g(mod: int) -> int:
     while True:
         g = random.randrange(2, mod)
         if pow(g, (mod - 1) // 2, mod) != 1:
@@ -96,7 +97,7 @@ def _gen_g(mod: int) -> int:
 
 def gen_public(private_key: int, mod: int):
     """Генерирует открытый ключ из закрытого по модулю"""
-    return pow(_gen_g(mod), private_key, mod)
+    return pow(gen_g(mod), private_key, mod)
 
 
 def gen_common(secret_key: int, public_key: int, mod: int) -> int:
@@ -122,3 +123,8 @@ def gen_mutually_prime(a):
         b = random.randrange(2, a)
         if math.gcd(a, b) == 1:
             return b
+
+
+def write_bytes_to_file(bytes, file):
+    for byte in bytes:
+        file.write(byte.to_bytes(1, sys.byteorder))
