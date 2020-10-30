@@ -83,9 +83,9 @@ def gen_p(a: int, b: int) -> int:
 def gen_safe_p(a: int, b: int) -> int:
     """Генерирует безопасное простое число в диапазоне [a, b]"""
     while True:
-        p = gen_p(a // 2, (b - 1) // 2)
-        if is_prime(p * 2 + 1):
-            return p * 2 + 1
+        q = gen_p(a // 2, (b - 1) // 2)
+        if is_prime(q * 2 + 1):
+            return q * 2 + 1
 
 
 def gen_g(mod: int) -> int:
@@ -128,3 +128,12 @@ def gen_mutually_prime(a):
 def write_bytes_to_file(bytes, file):
     for byte in bytes:
         file.write(byte.to_bytes(1, sys.byteorder))
+
+
+def gen_c_d(p):
+    c = gen_mutually_prime(p)
+    gcd, d, _ = extgcd(c, p)
+    assert gcd == 1
+    while d < 0:
+        d += p
+    return c, d
