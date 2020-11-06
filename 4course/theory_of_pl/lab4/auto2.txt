@@ -1,0 +1,10 @@
+stack = Z
+start = q0
+end = q1
+(q0, a, Z) = (q0, aZ)
+(q0, b, Z) = (q0, bZ)
+(q0, a, a) = (q0, aa)
+(q0, b, a) = (q0, _)
+(q0, b, b) = (q0, bb)
+(q0, b, a) = (q0, _)
+(q0, _, Z) = (q1, _)
