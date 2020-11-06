@@ -13,6 +13,8 @@ class TFrac {
     int a, b;
 
 public:
+    TFrac() : a(0), b(1) {}
+
     TFrac(int a, int b) : a(a), b(b) {
         check_divisor_by_zero();
         reduce();
@@ -24,6 +26,10 @@ public:
         b = std::stoi(&fraction[slash_ind + 1]);
         check_divisor_by_zero();
         reduce();
+    }
+
+    [[nodiscard]] std::string getFractionString() const {
+        return std::to_string(a) + '/' + std::to_string(b);
     }
 
     [[nodiscard]] int getDividend() const {
@@ -69,7 +75,7 @@ private:
 };
 
 std::ostream &operator<<(std::ostream &ostream, const TFrac &frac) {
-    return ostream << frac.getDividend() << "/" << frac.getDivisor();
+    return ostream << frac.getFractionString();
 }
 
 TFrac operator+(const TFrac &a, const TFrac &b) {

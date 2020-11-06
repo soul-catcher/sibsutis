@@ -1,7 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
 #include "../doctest.h"
-#include "UFrac.h"
+#include "TFrac.h"
 
 TEST_SUITE ("constructors") {
     TEST_CASE ("int constructor") {
