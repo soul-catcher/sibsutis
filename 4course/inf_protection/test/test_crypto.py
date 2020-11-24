@@ -104,12 +104,6 @@ class TestIsPrime(unittest.TestCase):
     def test_one(self):
         self.assertFalse(is_prime(1))
 
-    def test_neg_one(self):
-        self.assertFalse(is_prime(-1))
-
-    def test_neg_two(self):
-        self.assertFalse(is_prime(-2))
-
     def test_some_primes(self):
         for prime in 2, 3, 5, 7, 11, 13:
             with self.subTest(prime):

@@ -9,7 +9,7 @@ r = pow(g, k, p)
 
 open('generated/elgamal_keys.txt', 'w').write(f'p = {p}\ng = {g}\ncb = {cb}\tdb = {db}\nk = {k}\tr = {r}')
 
-original_data = open('original.jpg', 'rb').read()
+original_data = open('../res/original.jpg', 'rb').read()
 
 encrypted = [byte * pow(db, k, p) % p for byte in original_data]
 open('generated/elgamal_encrypted.txt', 'w').write(str(encrypted))

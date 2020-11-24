@@ -7,7 +7,7 @@ cb, db = gen_c_d(p - 1)
 
 open('generated/shamir_keys.txt', 'w').write(f'p = {p}\nca = {ca}\tda = {da}\ncb = {cb}\tdb = {db}')
 
-original_data = open('original.jpg', 'rb').read()
+original_data = open('../res/original.jpg', 'rb').read()
 
 
 def encrypt_data(data, power, mod):
