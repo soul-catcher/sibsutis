@@ -4,8 +4,6 @@
 
 #include "TMemory.h"
 #include "../lab1/TFrac.h"
-#include "../lab5/TFracEditor.h"
-#include "../lab3/TPNumber.h"
 
 
 TEST_SUITE ("TMemory_Test") {

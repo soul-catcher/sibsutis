@@ -37,8 +37,8 @@ public:
 
 template<class T>
 TMemory<T>::TMemory(T FNumber) {
-        this->FNumber = FNumber;
-        this->FState = _Off;
+    this->FNumber = FNumber;
+    this->FState = _Off;
 }
 
 template<class T>
