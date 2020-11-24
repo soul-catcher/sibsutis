@@ -1,0 +1,29 @@
+<!DOCTYPE>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Записная книжка</title>
+</head>
+<body>
+	<h4><font style="bold">Записная книжка</font></h4>
+	<form action="lab9_2.php" method="post">
+		<p>Введите фамилию и имя [*]: 
+			<input type="text" name="record[name]">
+		</p>
+		<p>Введите город: 
+			<input type="text" name="record[city]">
+		</p>
+		<p>Введите адрес: 
+			<input type="text" name="record[address]">
+		</p>
+		<p>Введите дату рождения в формате ГГГ-ММ-ДД: 
+			<input type="text" name="record[dob]">
+		</p>
+		<p>Введите email [*]: 
+			<input type="text" name="record[email]">
+		</p>
+		<button type="submit">Записать</button>
+	</form>
+	<p>Поля, помеченные [*], являются обязательными для заполнения!</p>
+</body>
+</html>
