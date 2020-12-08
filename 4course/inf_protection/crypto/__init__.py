@@ -169,3 +169,9 @@ def gen_c_d(p):
     while d < 0:
         d += p
     return c, d
+
+
+def inverse(n, p):
+    gcd, inv, _ = extgcd(n, p)
+    assert gcd == 1
+    return inv
