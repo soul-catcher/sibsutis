@@ -16,3 +16,4 @@ add_executable(lab8 lab8/TProc_Test.cpp lab8/TProc.h lab1/TFrac.h lab3/TPNumber.
 add_executable(lab9 lab9/TSet_Test.cpp lab9/TSet.h)
 add_executable(lab10.1 lab10/TMonomial_Test.cpp lab10/TMonomial.cpp)
 add_executable(lab10.2 lab10/TPoly_Test.cpp lab10/TPoly.cpp lab10/TMonomial.cpp)
+add_executable(main main.cpp lab5/TFracEditor.cpp lab4/TPNumEditor.cpp)

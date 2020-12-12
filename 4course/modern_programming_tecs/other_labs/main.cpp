@@ -1,4 +1,9 @@
-#inc
+#include "lab5/TFracEditor.h"
+#include "lab4/TPNumEditor.h"
+#include <iostream>
+
+using namespace std;
+
 int main() {
     cout << "\nTFracEditor:" << endl;
     TFracEditor fracEditor;
