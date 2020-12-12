@@ -1,8 +1,17 @@
+__theme__ = '''Написать программу, которая будет принимать на вход произвольную контекстно-свободную грамматику
+и выполнит преобразование её к каноническому виду.
+Преобразование осуществлять поэтапно, отображая результат на каждом из этапов.
+Программа должна проверить построенную грамматику на эквивалентность исходной: по обеим грамматикам сгенерировать
+множества всех цепочек в заданном пользователем диапазоне длин и проверить их на идентичность.
+Для подтверждения корректности выполняемых действий предусмотреть возможность корректировки любого из
+построенных множеств пользователем (изменение цепочки, добавление, удаление...).
+При обнаружении несовпадения должна выдаваться диагностика различий – где именно несовпадения и в чём они состоят.'''
+
 import json
 import sys
 
 from PySide2.QtCore import SIGNAL
-from PySide2.QtWidgets import QApplication, QMainWindow, QFileDialog
+from PySide2.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox
 
 import utils
 from grammar import Grammar
@@ -20,7 +29,7 @@ def update_start_sym_combobox(sym=None):
     cbox = window.ui.comboBox_stars_sym
     current = cbox.currentText()
     text = window.ui.lineEdit_non_terminals.text()
-    vals = utils.split_by_commas(text)
+    vals = utils.split_by(text, ',')
     cbox.clear()
     cbox.addItems(vals)
     if mb_new_sym := current or sym:
@@ -82,6 +91,9 @@ def check_grammar(grammar: Grammar) -> bool:
                              f'в левой части правил. Грамматика задана неверно!')
             return False
         for rule in rules:
+            if rules.count(rule) != 1:
+                print_to_actions(f'Правило {rule} не может находиться в правой части правила более одного раза!')
+                return False
             for chain_sym in rule:
                 if chain_sym not in grammar.VN and chain_sym not in grammar.VT:
                     print_to_actions(f'Символ {chain_sym} не находится ни во множестве терминальных, ни во множестве '
@@ -105,16 +117,34 @@ def open_grammar_file():
 
 
 def read_grammar_from_form() -> Grammar:
+    if not (lam := get_lambda()):
+        return False
     ui = window.ui
+    try:
+        p = utils.parse_rules(ui.rules.toPlainText(), lam)
+    except utils.WrongRulesException as e:
+        print_to_actions(e.message)
+        return False
     return Grammar(
-        utils.split_by_commas(ui.lineEdit_terminals.text()),
-        utils.split_by_commas(ui.lineEdit_non_terminals.text()),
-
+        utils.split_by(ui.lineEdit_terminals.text(), ','),
+        utils.split_by(ui.lineEdit_non_terminals.text(), ','),
+        p,
+        window.ui.comboBox_stars_sym.currentText()
     )
 
 
 def calculate():
-    print("clicked")
+    if not (grammar := read_grammar_from_form()):
+        return
+    if not check_grammar(grammar):
+        return
+    sequences = grammar.make_chains(window.ui.spinBox_min_len.value(), window.ui.spinBox_max_len.value())
+    sequences = [seq if seq else get_lambda() for seq in sequences]
+    window.ui.plainTextEdit_non_canon_chains.setPlainText('\n'.join(sequences))
+
+
+def update_spin_box():
+    window.ui.spinBox_max_len.setMinimum(window.ui.spinBox_min_len.value())
 
 
 if __name__ == "__main__":
@@ -123,8 +153,16 @@ if __name__ == "__main__":
     window = MainWindow()
 
     window.show()
+    update_start_sym_combobox()
     window.ui.pushButton_claculate.connect(SIGNAL('clicked()'), calculate)
     window.ui.lineEdit_non_terminals.connect(SIGNAL('editingFinished()'), update_start_sym_combobox)
     window.ui.action_open.connect(SIGNAL('triggered()'), open_grammar_file)
+    window.ui.action_author.connect(
+        SIGNAL('triggered()'), lambda: QMessageBox.information(window, "Автор", "Самсонов Дмитрий\nГруппа: ИП-712")
+    )
+    window.ui.action_theme.connect(
+        SIGNAL('triggered()'), lambda: QMessageBox.information(window, "Тема", __theme__)
+    )
+    window.ui.spinBox_min_len.connect(SIGNAL('editingFinished()'), update_spin_box)
 
     sys.exit(app.exec_())
