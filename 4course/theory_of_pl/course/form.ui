@@ -80,6 +80,13 @@
        <item row="2" column="1">
         <widget class="QPlainTextEdit" name="plainTextEdit_canon_chains"/>
        </item>
+       <item row="3" column="1">
+        <widget class="QPushButton" name="pushButton_compare_chains">
+         <property name="text">
+          <string>Сравнить цепочки</string>
+         </property>
+        </widget>
+       </item>
        <item row="3" column="0">
         <widget class="QLabel" name="label_status">
          <property name="text">
@@ -211,7 +218,7 @@ A -&gt; cAbb | @</string>
         </widget>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="plainTextEdit_3">
+        <widget class="QPlainTextEdit" name="plainTextEdit_canon_grammar">
          <property name="readOnly">
           <bool>true</bool>
          </property>

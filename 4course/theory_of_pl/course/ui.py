@@ -86,6 +86,11 @@ class Ui_course(object):
 
         self.formLayout.setWidget(2, QFormLayout.FieldRole, self.plainTextEdit_canon_chains)
 
+        self.pushButton_compare_chains = QPushButton(self.groupBox_3)
+        self.pushButton_compare_chains.setObjectName(u"pushButton_compare_chains")
+
+        self.formLayout.setWidget(3, QFormLayout.FieldRole, self.pushButton_compare_chains)
+
         self.label_status = QLabel(self.groupBox_3)
         self.label_status.setObjectName(u"label_status")
 
@@ -185,11 +190,11 @@ class Ui_course(object):
 
         self.verticalLayout.addWidget(self.label_10)
 
-        self.plainTextEdit_3 = QPlainTextEdit(self.groupBox_2)
-        self.plainTextEdit_3.setObjectName(u"plainTextEdit_3")
-        self.plainTextEdit_3.setReadOnly(True)
+        self.plainTextEdit_canon_grammar = QPlainTextEdit(self.groupBox_2)
+        self.plainTextEdit_canon_grammar.setObjectName(u"plainTextEdit_canon_grammar")
+        self.plainTextEdit_canon_grammar.setReadOnly(True)
 
-        self.verticalLayout.addWidget(self.plainTextEdit_3)
+        self.verticalLayout.addWidget(self.plainTextEdit_canon_grammar)
 
 
         self.gridLayout_2.addWidget(self.groupBox_2, 0, 0, 2, 1)
@@ -235,6 +240,7 @@ class Ui_course(object):
         self.label_3.setText(QCoreApplication.translate("course", u"\u041e\u0442", None))
         self.label_8.setText(QCoreApplication.translate("course", u"\u0426\u0435\u043f\u043e\u0447\u043a\u0438, \u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043d\u043d\u044b\u0435 \u0438\u0437 \u043d\u0435\u043a\u0430\u043d\u043e\u043d\u0438\u0447\u0435\u0441\u043a\u043e\u0439 \u0433\u0440\u0430\u043c\u043c\u0430\u0442\u0438\u043a\u0438", None))
         self.label_9.setText(QCoreApplication.translate("course", u"\u0426\u0435\u043f\u043e\u0447\u043a\u0438, \u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043d\u043d\u044b\u0435 \u0438\u0437 \u043a\u0430\u043d\u043e\u043d\u0438\u0447\u0435\u0441\u043a\u043e\u0439 \u0433\u0440\u0430\u043c\u043c\u0430\u0442\u0438\u043a\u0438", None))
+        self.pushButton_compare_chains.setText(QCoreApplication.translate("course", u"\u0421\u0440\u0430\u0432\u043d\u0438\u0442\u044c \u0446\u0435\u043f\u043e\u0447\u043a\u0438", None))
         self.label_status.setText(QCoreApplication.translate("course", u"\u0421\u0442\u0430\u0442\u0443\u0441:", None))
         self.groupBox_4.setTitle(QCoreApplication.translate("course", u"\u0421\u043e\u0431\u044b\u0442\u0438\u044f", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("course", u"\u0413\u0440\u0430\u043c\u043c\u0430\u0442\u0438\u043a\u0430", None))

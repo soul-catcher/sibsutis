@@ -1,6 +1,7 @@
 import unittest
 
 import utils
+from grammar import Grammar
 
 
 class SplitByCommasTest(unittest.TestCase):
@@ -89,6 +90,151 @@ class ParseRulesTest(unittest.TestCase):
     def test_wrong_place_arrow2(self):
         with self.assertRaises(utils.WrongRulesException):
             utils.parse_rules('A aAa -> ', '@')
+
+
+class CanonGrammarTest(unittest.TestCase):
+    def test_find_non_child_free(self):
+        grammar = Grammar(
+            ['a', 'b', 'c'],
+            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'S'],
+            {
+                'S': ['aAB', 'E'],
+                'A': ['aA', 'bB'],
+                'B': ['ACb', 'b'],
+                'C': ['A', 'bA', 'cC', 'aE'],
+                'D': ['a', 'c', 'Fb'],
+                'E': ['cE', 'aE', 'Eb', 'ED', 'FG'],
+                'F': ['BC', 'EC', 'AC'],
+                'G': ['Ga', 'Gb']
+            },
+            'S'
+        )
+        self.assertSetEqual({'E', 'G'}, grammar.find_child_free_non_terms())
+
+    def test_remove_rules1(self):
+        grammar = Grammar(
+            ['a', 'b', 'c'],
+            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'S'],
+            {
+                'S': ['aAB', 'E'],
+                'A': ['aA', 'bB'],
+                'B': ['ACb', 'b'],
+                'C': ['A', 'bA', 'cC', 'aE'],
+                'D': ['a', 'c', 'Fb'],
+                'E': ['cE', 'aE', 'Eb', 'ED', 'FG'],
+                'F': ['BC', 'EC', 'AC'],
+                'G': ['Ga', 'Gb']
+            },
+            'S'
+        )
+        grammar_expected = Grammar(
+            ['a', 'b', 'c'],
+            ['A', 'B', 'C', 'D', 'F', 'S'],
+            {
+                'S': ['aAB'],
+                'A': ['aA', 'bB'],
+                'B': ['ACb', 'b'],
+                'C': ['A', 'bA', 'cC'],
+                'D': ['a', 'c', 'Fb'],
+                'F': ['BC', 'AC'],
+            },
+            'S'
+        )
+        self.assertEqual(grammar_expected, grammar.remove_rules({'E', 'G'}))
+
+    def test_remove_rules2(self):
+        grammar = Grammar(
+            ['a', 'b', 'c'],
+            ['A', 'B', 'C', 'D', 'F', 'S'],
+            {
+                'S': ['aAB'],
+                'A': ['aA', 'bB'],
+                'B': ['ACb', 'b'],
+                'C': ['A', 'bA', 'cC'],
+                'D': ['a', 'c', 'Fb'],
+                'F': ['BC', 'AC'],
+            },
+            'S'
+        )
+        grammar_expected = Grammar(
+            ['a', 'b', 'c'],
+            ['A', 'B', 'C', 'S'],
+            {
+                'S': ['aAB'],
+                'A': ['aA', 'bB'],
+                'B': ['ACb', 'b'],
+                'C': ['A', 'bA', 'cC'],
+            },
+            'S'
+        )
+        self.assertEqual(grammar_expected, grammar.remove_rules({'D', 'F'}))
+
+    def test_find_unreachable_rules(self):
+        grammar = Grammar(
+            ['a', 'b', 'c'],
+            ['A', 'B', 'C', 'D', 'F', 'S'],
+            {
+                'S': ['aAB'],
+                'A': ['aA', 'bB'],
+                'B': ['ACb', 'b'],
+                'C': ['A', 'bA', 'cC'],
+                'D': ['a', 'c', 'Fb'],
+                'F': ['BC', 'AC'],
+            },
+            'S'
+        )
+        self.assertSetEqual({'D', 'F'}, grammar.find_unreachable_rules())
+
+    def test_remove_empty_rules(self):
+        grammar = Grammar(
+            ['a', 'b', 'c'],
+            ['A', 'B', 'C', 'S'],
+            {
+                'S': ['AaB', 'aB', 'cC'],
+                'A': ['AB', 'a', 'b', 'B'],
+                'B': ['Ba', ''],
+                'C': ['AB', 'c']
+            },
+            'S'
+        )
+        grammar_expected = Grammar(
+            ['a', 'b', 'c'],
+            ['A', 'B', 'C', 'S'],
+            {
+                'S': ['AaB', 'cC', 'aB', 'Aa', 'a', 'c'],
+                'A': ['AB', 'b', 'a', 'B'],
+                'B': ['a', 'Ba'],
+                'C': ['AB', 'c', 'A', 'B']
+            },
+            'S'
+        )
+        self.assertEqual(grammar_expected, grammar.remove_empty_rules())
+
+    def test_remove_chain_rules(self):
+        grammar = Grammar(
+            ['a', 'b', 'c'],
+            ['A', 'B', 'C', 'S'],
+            {
+                'S': ['AaB', 'cC', 'aB', 'Aa', 'a', 'c'],
+                'A': ['AB', 'b', 'a', 'B'],
+                'B': ['a', 'Ba'],
+                'C': ['AB', 'c', 'A', 'B']
+            },
+            'S'
+        )
+        grammar_expected = Grammar(
+            ['a', 'b', 'c'],
+            ['A', 'B', 'C', 'S'],
+            {
+                'S': ['AaB', 'cC', 'aB', 'Aa', 'a', 'c'],
+                'A': ['AB', 'b', 'a', 'Ba'],
+                'B': ['a', 'Ba'],
+                'C': ['AB', 'c', 'a', 'Ba', 'b']
+            },
+            'S'
+        )
+        self.assertEqual(grammar_expected, grammar.remove_chain_rules())
+
 
 if __name__ == '__main__':
     unittest.main()
