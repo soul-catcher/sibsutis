@@ -52,7 +52,7 @@ class Ui_course(object):
 
         self.spinBox_max_len = QSpinBox(self.groupBox)
         self.spinBox_max_len.setObjectName(u"spinBox_max_len")
-        self.spinBox_max_len.setValue(6)
+        self.spinBox_max_len.setValue(5)
 
         self.gridLayout.addWidget(self.spinBox_max_len, 1, 1, 1, 1)
 

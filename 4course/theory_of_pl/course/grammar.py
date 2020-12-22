@@ -1,6 +1,6 @@
-from dataclasses import dataclass
-from collections import defaultdict
 import itertools
+from collections import defaultdict
+from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
@@ -14,7 +14,6 @@ class Grammar:
         p1 = {left: set(right) for left, right in self.P.items()}
         p2 = {left: set(right) for left, right in other.P.items()}
         return set(self.VT) == set(other.VT) and set(self.VN) == set(other.VN) and p1 == p2 and self.S == other.S
-
 
     def make_chains(self, min_length: int, max_length: int) -> list[str]:
         stack = [([], self.S)]

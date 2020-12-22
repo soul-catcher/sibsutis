@@ -155,6 +155,7 @@ def read_grammar_from_form() -> Grammar:
         window.ui.comboBox_stars_sym.currentText()
     )
 
+
 def remove_empty_and_chains_rules(grammar: Grammar) -> Grammar:
     child_free = grammar.find_child_free_non_terms()
     if child_free:
@@ -224,13 +225,17 @@ def calculate():
 def update_spin_box():
     window.ui.spinBox_max_len.setMinimum(window.ui.spinBox_min_len.value())
 
+
 def save_result():
     filename, _ = QFileDialog.getSaveFileName(filter='Text files (*.txt)')
     if not filename:
         return
     strings = []
-    strings.append('Грамматика в каноническом виде:\n')
+    strings.append('Исходная грамматика:\n')
+    strings.append(grammar_to_str(read_grammar_from_form()))
+    strings.append('\nГрамматика в каноническом виде:\n')
     strings.append(window.ui.plainTextEdit_canon_grammar.toPlainText())
+
     strings.append('\nЦепочки, построенные из неканонической грамматики:\n')
     strings.append(window.ui.plainTextEdit_non_canon_chains.toPlainText())
     strings.append('\nЦепочки, построенные из канонической грамматики:\n')
