@@ -18,10 +18,16 @@
 
 ## Lab 1
 Для данной лабораторной необходим .bmp файл с таблицей цветов. Сконвертируем в него любое изображение:
-```bash
-magick any.img -type Palette out.bmp
-```
+
+    magick any.img -type Palette out.bmp
+
 Первая лаба принимает в качестве аргементов оригинальный .bmp файл с палитрой и имя нового файла:
-```bash
-cargo run --bin lab1 out.bmp decolorized.bmp
-```
+
+    cargo run --bin lab1 out.bmp decolorized.bmp
+
+
+## Lab2
+
+    magick orig.jpg BMP2:out.bmp
+
+// TODO дописать инструкцию и отформатировать

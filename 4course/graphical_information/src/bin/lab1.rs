@@ -48,6 +48,7 @@ fn main() -> std::io::Result<()> {
     if color_table_size == 0 {
         panic!("В файле отсутствует таблица цветов");
     }
+    // TODO заменить на ассерты и отформатировать
     println!("Размер таблицы цветов {}", color_table_size);
     file.seek(SeekFrom::Start(0x8a))?;
 
