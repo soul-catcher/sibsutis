@@ -45,3 +45,13 @@
 После этого запускаем программу с аргументами:
 
     $ cargo run --bin lab2 img.bmp img_with_frame.bmp
+
+## Lab3
+
+Так же как и в прошлый раз, конвертируем в формат BMP2.
+
+    $ convert img.jpg BMP2:img.bmp
+
+Запускаем программу (лучше с флагом `--release`, так программа выполняется значительно бытрее):
+
+    $ cargo run --release --bin lab3 img.bmp rotated.bmp
