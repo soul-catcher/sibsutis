@@ -1,5 +1,5 @@
+use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
 use std::fs;
-use byteorder::{ReadBytesExt, LittleEndian, WriteBytesExt};
 use std::io::{Seek, SeekFrom};
 
 #[derive(Debug)]
@@ -34,22 +34,21 @@ fn main() -> std::io::Result<()> {
     let out_file = &args[2];
     fs::copy(in_file, out_file)?;
 
-    let mut file = fs::OpenOptions::new().read(true).write(true).open(out_file)?;
+    let mut file = fs::OpenOptions::new()
+        .read(true)
+        .write(true)
+        .open(out_file)?;
     let header = Header::from_reader(&mut file)?;
-    println!("{:#?}", header);
+    dbg!(&header);
 
     let info_table_size = file.read_u32::<LittleEndian>()?;
-    if info_table_size <= 12 {
-        panic!("Версия таблицы CORE не поддерживается");
-    }
-    println!("Размер таблицы {}", info_table_size);
+    assert_ne!(info_table_size, 12, "Версия таблицы CORE не поддерживается");
+
+    dbg!(info_table_size);
     file.seek(SeekFrom::Start(0x2e))?;
     let color_table_size = file.read_u32::<LittleEndian>()?;
-    if color_table_size == 0 {
-        panic!("В файле отсутствует таблица цветов");
-    }
-    // TODO заменить на ассерты и отформатировать
-    println!("Размер таблицы цветов {}", color_table_size);
+    assert_ne!(color_table_size, 0, "В файле отсутствует таблица цветов");
+    dbg!(color_table_size);
     file.seek(SeekFrom::Start(0x8a))?;
 
     for _ in 0..color_table_size {
