@@ -64,16 +64,20 @@
 
     # gpasswd --add <username> video
 
-Конвертируем изображение в формат BMP2, уменьшаем его, если оно больше размера экрана:
+Подготавливаем 3 изображения в формате BMP2 с разным количеством цветов и уменьшаем его, если оно больше размера экрана:
 
-    $ convert img.jpg -resize 1920х1080\> BMP2:img.bmp
+    $ convert img.jpg -resize 1920х1080\> BMP2:TrueColor.bmp
+    $ convert img.jpg -resize 1920х1080\> -colors 256 BMP2:256.bmp
+    $ convert img.jpg -resize 1920х1080\> -colors 16 BMP2:16.bmp
 
 Переходим в любой TTY: `ctrl` + `alt` + `F3`
 
-Запускаем программу с флагом `--release` (без него фреймбуффер не желает отрисовываться). Выход происходит по
-нажатию `Enter`.
+Запускаем программу для каждого файла с флагом `--release` (без него фреймбуффер не желает отрисовываться). Выход
+происходит по нажатию `Enter`.
 
-    $ cargo run --release --bin lab4 img.bmp
+    $ cargo run --release --bin lab4 TrueColor.bmp
+    $ cargo run --release --bin lab4 256.bmp
+    $ cargo run --release --bin lab4 16.bmp
 
 (Опционально) Выход из группы `video`:
 
