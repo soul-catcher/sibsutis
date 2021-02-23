@@ -84,7 +84,7 @@
 
 ## Lab5
 
-Конвертируем изображение в MBP2:
+Конвертируем изображение в BMP2:
 
     $ convert img.jpg BMP2:img.bmp
 
@@ -92,3 +92,14 @@
 масштабирования:
 
     $ cargo run --release --bin lab5 img.bmp resized.bmp 0.7
+
+## Lab6
+
+Конвертируем изображение и логотип в BMP2:
+
+    $ convert img.jpg BMP2:img.bmp
+    $ convert logo.jpg BMP2:logo.bmp
+
+Запускаем программу, со следующими аргументами: имя оригинального файла, имя файла с логотипом и имя нового файла:
+
+    $ cargo run --release --bin lab6 img.bmp logo.bmp result.bmp

@@ -93,4 +93,34 @@ impl BMP {
         self.file.write_all(&image_data)?;
         Ok(())
     }
+
+    pub fn add(&mut self, other: &Self) -> std::io::Result<()> {
+        assert!(
+            other.height <= self.height && other.width <= self.width,
+            "Невозможно вписать большее изображение в меньшее"
+        );
+        let bg_b = other.image_data[0];
+        let bg_g = other.image_data[1];
+        let bg_r = other.image_data[2];
+        for line in 0..other.height as usize {
+            for col in 0..other.width as usize {
+                let other_idx = line * other.calc_line_length() as usize + col * 3;
+                let self_idx = line * self.calc_line_length() as usize + col * 3;
+                if other.image_data[other_idx] != bg_b
+                    || other.image_data[other_idx + 1] != bg_g
+                    || other.image_data[other_idx + 2] != bg_r
+                {
+                    self.image_data[self_idx] =
+                        other.image_data[other_idx as usize] / 2 + self.image_data[self_idx] / 2;
+                    self.image_data[self_idx + 1] =
+                        other.image_data[other_idx + 1] / 2 + self.image_data[self_idx + 1] / 2;
+                    self.image_data[self_idx + 2] =
+                        other.image_data[other_idx + 2] / 2 + self.image_data[self_idx + 2] / 2;
+                }
+            }
+        }
+        let id = self.image_data.clone();
+        self.write_new_image_data(&id)?;
+        Ok(())
+    }
 }
