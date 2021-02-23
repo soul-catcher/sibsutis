@@ -52,6 +52,7 @@ impl BMP {
         self.file.seek(SeekFrom::Start(0x02))?;
         self.file.write_u32::<LittleEndian>(new_filesize)?;
         self.filesize = new_filesize;
+        self.file.set_len(new_filesize as u64)?;
         Ok(())
     }
 
@@ -74,34 +75,20 @@ impl BMP {
         let mut new_image_data = Vec::with_capacity(new_width as usize * 3 * new_height as usize);
         for line in 0..new_height {
             for col in 0..new_width {
-                new_image_data.push(
-                    self.image_data[(line as f64 / coeff).round() as usize
-                        * self.calc_line_length() as usize
-                        + (col as f64 / coeff).round() as usize * 3],
-                );
-                new_image_data.push(
-                    self.image_data[(line as f64 / coeff).round() as usize
-                        * self.calc_line_length() as usize
-                        + (col as f64 / coeff).round() as usize * 3
-                        + 1],
-                );
-                new_image_data.push(
-                    self.image_data[(line as f64 / coeff).round() as usize
-                        * self.calc_line_length() as usize
-                        + (col as f64 / coeff).round() as usize * 3
-                        + 2],
-                );
+                let start_idx = (line as f64 / coeff) as usize * self.calc_line_length() as usize
+                    + (col as f64 / coeff * 3.) as usize;
+                new_image_data.extend_from_slice(&self.image_data[start_idx..start_idx + 3]);
             }
         }
+        self.write_new_image_data(&new_image_data)?;
         self.set_filesize(
             self.filesize - self.image_data.len() as u32 + new_image_data.len() as u32,
         )?;
-        self.write_new_image_data(new_image_data)?;
         self.set_new_dimensions(new_width, new_height)?;
         Ok(())
     }
 
-    fn write_new_image_data(&mut self, image_data: Vec<u8>) -> std::io::Result<()> {
+    fn write_new_image_data(&mut self, image_data: &Vec<u8>) -> std::io::Result<()> {
         self.file.seek(SeekFrom::Start(self.offset as u64)).unwrap();
         self.file.write_all(&image_data)?;
         Ok(())
