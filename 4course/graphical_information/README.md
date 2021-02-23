@@ -34,7 +34,7 @@
 
 Программа принимает в качестве аргементов оригинальный .bmp файл с палитрой и имя нового файла:
 
-    $ cargo run --bin lab1 img.bmp decolorized.bmp
+    $ cargo run --release --bin lab1 img.bmp decolorized.bmp
 
 ## Lab2
 
@@ -45,7 +45,7 @@
 
 После этого запускаем программу с аргументами:
 
-    $ cargo run --bin lab2 img.bmp img_with_frame.bmp
+    $ cargo run --release --bin lab2 img.bmp img_with_frame.bmp
 
 ## Lab3
 
@@ -53,7 +53,7 @@
 
     $ convert img.jpg BMP2:img.bmp
 
-Запускаем программу (лучше с флагом `--release`, так программа выполняется значительно бытрее):
+Запускаем программу:
 
     $ cargo run --release --bin lab3 img.bmp rotated.bmp
 
@@ -72,8 +72,7 @@
 
 Переходим в любой TTY: `ctrl` + `alt` + `F3`
 
-Запускаем программу для каждого файла с флагом `--release` (без него фреймбуффер не желает отрисовываться). Выход
-происходит по нажатию `Enter`.
+Запускаем программу для каждого файла. Выход происходит по нажатию `Enter`.
 
     $ cargo run --release --bin lab4 TrueColor.bmp
     $ cargo run --release --bin lab4 256.bmp
@@ -82,3 +81,14 @@
 (Опционально) Выход из группы `video`:
 
     # gpasswd --delete <username> video
+
+## Lab5
+
+Конвертируем изображение в MBP2:
+
+    $ convert img.jpg BMP2:img.bmp
+
+Запускаем программу, передавая в качестве аргументов имя оригинального файла, имя нового файла и коэффициент
+масштабирования:
+
+    $ cargo run --release --bin lab5 img.bmp resized.bmp 0.7
