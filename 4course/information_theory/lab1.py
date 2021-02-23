@@ -5,8 +5,8 @@ from lib import *
 
 PROBABILITIES = [0.1, 0.6, 0.1, 0.2]
 
-f1 = open('f1.txt').readline().removesuffix('\n')
-f2 = open('f2.txt').readline().removesuffix('\n')
+f1 = open("f1.txt").readline().removesuffix("\n")
+f2 = open("f2.txt").readline().removesuffix("\n")
 
 
 for i in range(1, 12):
@@ -20,10 +20,10 @@ for i in range(1, 12):
     f1_theoretical = math.log2(len(f2_theoretical_probs)) / i
     f2_theoretical = entropy(f2_theoretical_probs) / i
     print(
-        f'\n{i = }',
-        f'{f1_estimation = }',
-        f'{f2_estimation = }',
-        f'{f1_theoretical = }',
-        f'{f2_theoretical = }',
-        sep='\n'
+        f"\n{i = }",
+        f"{f1_estimation = }",
+        f"{f2_estimation = }",
+        f"{f1_theoretical = }",
+        f"{f2_theoretical = }",
+        sep="\n",
     )
