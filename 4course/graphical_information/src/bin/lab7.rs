@@ -14,4 +14,5 @@ fn main() {
     fs::copy(in_file, out_file).unwrap();
     let mut bmp = BMP::open(Path::new(out_file)).unwrap();
     bmp.add_text(&txt);
+    println!("{}", bmp.read_text());
 }

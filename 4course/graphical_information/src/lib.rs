@@ -128,14 +128,14 @@ impl BMP {
         let mut len = txt.len();
         for _ in 0..32 {
             let byte = image_data_it.next().unwrap();
-            *byte &= 0b11111100 | len as u8;
+            *byte = *byte & 0b11111100 | 0b11 & len as u8;
             len >>= 2;
         }
 
         for mut byte in txt.bytes() {
             for _ in 0..4 {
                 let img_byte = image_data_it.next().unwrap();
-                *img_byte &= 0b11111100 | byte;
+                *img_byte = *img_byte & 0b11111100 | 0b11 & byte as u8;
                 byte >>= 2;
             }
         }
@@ -143,6 +143,17 @@ impl BMP {
     }
 
     pub fn read_text(&self) -> String {
-
+        let mut len = 0usize;
+        for i in (0..32).rev() {
+            len <<= 2;
+            let byte = self.image_data[i];
+            len |= 0b11 & byte as usize;
+        }
+        let mut str = vec![0u8; len];
+        for i in (0..len * 4).rev() {
+            str[i/4] <<= 2;
+            str[i/4] |= 0b11 & self.image_data[i];
+        }
+        String::from_utf8(str).unwrap()
     }
 }
