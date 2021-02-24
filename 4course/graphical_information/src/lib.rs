@@ -119,8 +119,30 @@ impl BMP {
                 }
             }
         }
-        let id = self.image_data.clone();
-        self.write_new_image_data(&id)?;
+        self.write_new_image_data(&self.image_data.clone())?;
         Ok(())
+    }
+
+    pub fn add_text(&mut self, txt: &String) {
+        let mut image_data_it = self.image_data.iter_mut();
+        let mut len = txt.len();
+        for _ in 0..32 {
+            let byte = image_data_it.next().unwrap();
+            *byte &= 0b11111100 | len as u8;
+            len >>= 2;
+        }
+
+        for mut byte in txt.bytes() {
+            for _ in 0..4 {
+                let img_byte = image_data_it.next().unwrap();
+                *img_byte &= 0b11111100 | byte;
+                byte >>= 2;
+            }
+        }
+        self.write_new_image_data(&self.image_data.clone()).unwrap();
+    }
+
+    pub fn read_text(&self) -> String {
+
     }
 }
