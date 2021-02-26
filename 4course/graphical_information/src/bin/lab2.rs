@@ -79,7 +79,7 @@ fn main() -> std::io::Result<()> {
 
     file.seek(SeekFrom::Start(0x18))?;
     let bit_count = file.read_u16::<LittleEndian>()?;
-    assert_eq!(bit_count, 24, "Файл имеет цвет, отличный от 16-битного");
+    assert_eq!(bit_count, 24, "Файл имеет цвет, отличный от 24-битного");
 
     file.seek(SeekFrom::Start(0x12))?;
     let width = file.read_u16::<LittleEndian>()?;
