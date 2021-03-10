@@ -12,18 +12,14 @@ for i, text in enumerate((f1, f2, dog_hearth, code), 1):
     frequencies = get_frequencies(text)
     text_entropy = entropy(frequencies.values())
     for n in range(2, 5):
-        print(f' encoded alphabet len = {n} '.center(40, '*'))
+        print(f' encoded alphabet size = {n} '.center(40, '*'))
         code_table = huffman(frequencies, n)
         if n == 2:
-            redundancy = sum(map(len, code_table.values())) / len(code_table) - text_entropy
-            print(f'{redundancy = }')
+            average_length = average_code_length(code_table, frequencies)
+            print(f'{average_length = }\nredundancy = {average_length - text_entropy}')
 
         encoded_text = ''.join(map(str, encode(text, code_table)))
         for sub_len in range(1, 4):
             subs = list(gen_subsequences(encoded_text, sub_len))
             sub_freqs = get_frequencies(subs)
-            print(
-                f'{sub_len = }',
-                f'Entropy = {entropy(sub_freqs.values()) / sub_len}',
-                sep='\n'
-            )
+            print(f'{sub_len = }\nEntropy = {entropy(sub_freqs.values()) / sub_len}')

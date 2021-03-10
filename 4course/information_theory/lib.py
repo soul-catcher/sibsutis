@@ -16,6 +16,7 @@ __all__ = [
     'prepare_text',
     'huffman',
     'encode',
+    'average_code_length',
 ]
 
 H = TypeVar('H', bound=Hashable)
@@ -66,3 +67,7 @@ def huffman(frequencies: Mapping[H, float], n: int = 2) -> dict[H, list[int]]:
 
 def encode(elements: Iterable[H], encoding_table: Mapping[H, Sequence[int]]) -> Iterator[int]:
     return itertools.chain.from_iterable(encoding_table[elem] for elem in elements)
+
+
+def average_code_length(encoding_table: Mapping[H, Sequence[int]], frequencies: Mapping[H, float]):
+    return sum(len(encoding_table[elem]) * frequencies[elem] for elem in encoding_table)
