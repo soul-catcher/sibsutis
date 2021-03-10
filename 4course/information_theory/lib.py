@@ -1,7 +1,11 @@
+from __future__ import annotations
+
+import heapq
 import math
 import re
-from collections import Counter
-from collections.abc import Collection, Generator, Hashable, Iterable, Sequence
+from collections import Counter, defaultdict
+from collections.abc import Collection, Generator, Hashable, Iterable, Mapping, Sequence
+from dataclasses import dataclass
 from typing import TypeVar
 
 __all__ = [
@@ -9,6 +13,7 @@ __all__ = [
     'get_frequencies',
     'gen_subsequences',
     'prepare_text',
+    'huffman',
 ]
 
 H = TypeVar('H', bound=Hashable)
@@ -29,3 +34,29 @@ def gen_subsequences(sequence: S, n: int) -> Generator[S]:
 
 def prepare_text(text: str) -> str:
     return re.sub(r'[^а-я ]', '', text.lower().translate(str.maketrans('ъё\n', 'ье ')))
+
+
+@dataclass(order=True, frozen=True)
+class _Node:
+    frequency: float
+    elements: tuple[Hashable, ...]
+
+    def __add__(self, other: _Node):
+        return _Node(self.frequency + other.frequency, self.elements + other.elements)
+
+
+def huffman(frequencies: Mapping[H, float], n: int = 2) -> dict[H, list[int]]:
+    if len(frequencies) == 1:
+        return {next(iter(frequencies)): [0]}
+    codes = defaultdict(list)
+    heap = [_Node(freq, (elem,)) for elem, freq in frequencies.items()]
+    heapq.heapify(heap)
+    while len(heap) > 1:
+        nodes = [heapq.heappop(heap) for _ in range(min(n, len(heap)))]
+        for i, node in enumerate(nodes):
+            for e in node.elements:
+                codes[e].append(i)
+        heapq.heappush(heap, sum(nodes, _Node(0, ())))
+    for code in codes.values():
+        code.reverse()
+    return dict(codes)
