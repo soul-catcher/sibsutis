@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import heapq
+import itertools
 import math
 import re
 from collections import Counter, defaultdict
-from collections.abc import Collection, Generator, Hashable, Iterable, Mapping, Sequence
+from collections.abc import Collection, Generator, Hashable, Iterable, Iterator, Mapping, Sequence
 from dataclasses import dataclass
 from typing import TypeVar
 
@@ -14,6 +15,7 @@ __all__ = [
     'gen_subsequences',
     'prepare_text',
     'huffman',
+    'encode',
 ]
 
 H = TypeVar('H', bound=Hashable)
@@ -60,3 +62,7 @@ def huffman(frequencies: Mapping[H, float], n: int = 2) -> dict[H, list[int]]:
     for code in codes.values():
         code.reverse()
     return dict(codes)
+
+
+def encode(elements: Iterable[H], encoding_table: Mapping[H, Sequence[int]]) -> Iterator[int]:
+    return itertools.chain.from_iterable(encoding_table[elem] for elem in elements)
