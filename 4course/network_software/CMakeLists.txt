@@ -13,6 +13,9 @@ target_link_libraries(lab2_server pthread)
 
 add_executable(lab2_client lab2/client.c)
 
+add_executable(lab3_server lab3/server.c)
+add_executable(lab3_client lab3/client.c)
+
 add_executable(lab4_server lab4/server.c)
 add_executable(lab4_client_tcp lab4/tcp_client.c)
 add_executable(lab4_client_udp lab4/udp_client.c)
